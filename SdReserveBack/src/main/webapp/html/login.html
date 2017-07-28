@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sd reserve back manage login</title>
+    <script src="reserveSys/resources/scripts/jquery-1.7.1.min.js"></script>
+
+    <script>
+        $(document).ready(
+            function () {
+                $("#login").click(function () {
+                    var oaAccount = $("#oaAccount").val();
+                    var oaPwd = $("#oaPwd").val();
+                    console.log(oaAccount + oaPwd);
+                    var reqJs = {oaAccount: oaAccount, oaPwd: oaPwd};
+                    $.ajax({
+                        type:"post",
+                        dataType:"json",
+                        contentType:"application/json",
+                        url:"/doLogin.do",
+                        data:JSON.stringify(reqJs),
+                        success:function (data) {
+                            alert(JSON.stringify(data));
+                            if(data.success == true){
+                                window.location = "/html/loginSuccess.html";
+                            }
+                        }
+                    });
+                });
+            }
+        );
+    </script>
+
+</head>
+<body>
+
+    <ul>
+        <li><label>OA帐号: <input type="text" id="oaAccount"></label></li>
+        <li><label>OA密码： <input type="password" id="oaPwd"></label></li>
+        <li><button id="login">登录</button></li>
+    </ul>
+
+    <div>
+        <form action="/doLogin.do" method="post" onsubmit="onpassword(this)">
+            <div>
+                <input type="text" name="oaAccount" placeholder="用户名" autofocus>
+            </div>
+            <div>
+                <input type="password" name="oaPwd" placeholder="密码" >
+            </div>
+            <!--<div class="col-sm-6">-->
+                <!--<input type="text" placeholder="验证码" name="checkCode" maxlength="4"-->
+                       <!--autocomplete="off"> <img  id="ctchimg"-->
+                                                 <!--src="/captcha.jpg" class="yzm" >-->
+            <!--</div>-->
+            <div>
+                <button type="submit">登 录</button>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        $("#ctchimg").click(function(){
+            $(this).attr("src","");
+            $(this).attr("src","/captcha.jpg");
+        });
+        function onpassword(obj){
+            var pwd = $(obj).find('input[name="oaPwd"]').val(),md5Pwd = "";
+            md5Pwd = hex_md5(pwd);
+            $(obj).find('input[name="oaPwd"]').val(md5Pwd);
+            return;
+        }
+    </script>
+
+</body>
+</html>

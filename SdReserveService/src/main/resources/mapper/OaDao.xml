@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.SdReserve.dao.OaDao">
+
+	<resultMap id="oaBean" type="com.SdReserve.bean.OaBean">
+		<id column="oa_id" property="oaId"/>
+		<result column="oa_account" property="oaAccount"/>
+		<result column="oa_pwd" property="oaPwd"/>
+	</resultMap>
+	<resultMap id="user" type="com.SdReserve.bean.User">
+		<id column="user_id" property="userId"/>
+		<result column="username" property="username"/>
+		<result column="mobile" property="mobile"/>
+		<result column="dept_id" property="deptId"/>
+		<result column="role_id" property="roleId"/>
+		<result column="oa_id" property="oaId"/>
+	</resultMap>
+
+	<sql id="oaBean">
+		oa_id, oa_account, oa_pwd
+	</sql>
+	<sql id="user">
+		user_id,username, mobile, dept_id, role_id, oa_id
+	</sql>
+
+	<select id="getOaAccount" parameterType="string" resultMap="oaBean">
+		select <include refid="oaBean"/>
+		from oa_account
+		where oa_account = #{param}
+	</select>
+
+	<select id="getUserByOaId" parameterType="int" resultMap="user">
+		select <include refid="user"/>
+		from s_user
+		where oa_id = #{param}
+	</select>
+
+</mapper>
